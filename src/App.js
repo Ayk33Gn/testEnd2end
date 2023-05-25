@@ -1,24 +1,66 @@
-import logo from './logo.svg';
+import {React, useRef, useState} from 'react';
 import './App.css';
 
+
+
+
 function App() {
+  
+ const [value, setValue] = useState('')
+ const [listValue, setListValue] =useState([])
+ const inputRef = useRef(null);
+  
+
+  const handleChange = (e) => {
+    setValue(e.target.value);
+  }
+  
+  const handleClick = () => {
+    if (value.trim() !== '') {
+      const newItem = ` ${value}`;
+      setListValue((prevItems) => [...prevItems, newItem]);
+      setValue('');   
+  }
+   if (value === "John Doe") {
+    return alert("Submitted Name: John Doe")
+   }
+}
+
+const removeClick = () => {
+  setListValue([]);
+
+  if(inputRef) {
+    inputRef.current.value = ''
+  }
+
+  }
+
   return (
+    
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div>
+    <h1>Test App</h1>
     </div>
+    <div>
+      <input type="text"
+      placeholder="nom"
+      ref={inputRef}
+      onChange={handleChange}
+      data-testid="inputText"/>
+    </div>
+    <div>
+      <button type="submit"data-testid="inputSubmit" onClick={(handleClick)}>Cliquer</button>
+      <button data-testid='remove'  onClick={(removeClick)}>Supprimer</button>
+    </div>
+    <div style={{display:'flex', justifyContent:'center'}}>
+      <ul>
+        {listValue.map((item) => (
+         <li data-testid='list' key={item}>{item}</li>
+        ))}
+      </ul>
+    </div>
+    </div>
+    
   );
 }
 
